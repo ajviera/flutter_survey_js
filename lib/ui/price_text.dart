@@ -11,12 +11,11 @@ class PriceText extends StatelessWidget {
     this.currency = '￥',
     this.color = Colors.green,
     this.freeColor = const Color(0xfff96b4b),
-  })  : assert(currency != null),
-        assert(price != null);
+  });
 
   Widget build(BuildContext context) {
     final list = <Widget>[];
-    if (currency != null && price != null && price > 0.00) {
+    if (price > 0.00) {
       list.add(Text(currency, style: TextStyle(color: color)));
       list.add(Text(
         price.toStringAsFixed(2),

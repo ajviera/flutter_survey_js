@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey_js/model/survey.dart' as s;
+import 'package:flutter_survey_js/ui/elements/file_picker.dart';
+import 'package:flutter_survey_js/ui/elements/image_picker.dart';
 import 'package:flutter_survey_js/ui/elements/matrix_dropdown.dart';
 import 'package:flutter_survey_js/ui/panel_title.dart';
 import 'package:flutter_survey_js/ui/reactive/reactive_nested_form.dart';
@@ -87,7 +89,8 @@ class SurveyElementFactory {
       return urlToImage((element as s.Image).imageLink)
           .wrapQuestionTitle(element, hasTitle: hasTitle);
     });
-    // register<s.ImagePicker>(imagePickerBuilder);
+    register<s.ImagePicker>(imagePickerBuilder);
+    register<s.File>(filePickerBuilder);
 
     register<s.Dropdown>((context, element, {bool hasTitle = true}) {
       final e = (element as s.Dropdown);

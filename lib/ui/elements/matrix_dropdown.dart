@@ -33,7 +33,8 @@ class MatrixDropdownElement extends StatelessWidget {
         List<TableRow> _list = <TableRow>[];
 
         /// Add title bar
-        _list.add(TableRow(
+        _list.add(
+          TableRow(
             decoration: BoxDecoration(
               color: Colors.grey,
             ),
@@ -42,44 +43,51 @@ class MatrixDropdownElement extends StatelessWidget {
               ...((matrix.columns ?? []).map((e) => TableCell(
                     child: MatrixDropdownTitle(e),
                   )))
-            ]));
-        (matrix.rows ?? []).asMap().forEach((i, row) {
-          _list.add(TableRow(
-              decoration: i % 2 != 0
-                  ? BoxDecoration(
-                      color: Colors.grey,
-                    )
-                  : null,
-              children: [
-                //Row name
-                TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Text(row.text ?? "")),
-                ...(matrix.columns ?? []).map((column) {
-                  final q = matrixDropdownColumnToQuestion(matrix, column);
-                  final v = questionToValidators(q);
-
-                  return TableCell(
+            ],
+          ),
+        );
+        (matrix.rows ?? []).asMap().forEach(
+          (i, row) {
+            _list.add(
+              TableRow(
+                decoration: i % 2 != 0
+                    ? BoxDecoration(
+                        color: Colors.grey,
+                      )
+                    : null,
+                children: [
+                  //Row name
+                  TableCell(
                       verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: ReactiveNestedForm(
-                        formControlName: row.value!.toString(),
-                        child: Builder(
-                          builder: (context) {
-                            final fg = ReactiveForm.of(context) as FormGroup;
-                            final c = fg.control(column.name!);
-                            //TODO runner
-                            // //concat validators
-                            // final newV = HashSet<ValidatorFunction>.of(
-                            //     [...c.validators, ...v]).toList();
-                            c.setValidators(v);
-                            return SurveyElementFactory()
-                                .resolve(context, q, hasTitle: false);
-                          },
-                        ),
-                      ));
-                }).toList()
-              ]));
-        });
+                      child: Text(row.text ?? "")),
+                  ...(matrix.columns ?? []).map((column) {
+                    final q = matrixDropdownColumnToQuestion(matrix, column);
+                    final v = questionToValidators(q);
+
+                    return TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: ReactiveNestedForm(
+                          formControlName: row.value!.toString(),
+                          child: Builder(
+                            builder: (context) {
+                              final fg = ReactiveForm.of(context) as FormGroup;
+                              final c = fg.control(column.name!);
+                              //TODO runner
+                              // //concat validators
+                              // final newV = HashSet<ValidatorFunction>.of(
+                              //     [...c.validators, ...v]).toList();
+                              c.setValidators(v);
+                              return SurveyElementFactory()
+                                  .resolve(context, q, hasTitle: false);
+                            },
+                          ),
+                        ));
+                  }).toList()
+                ],
+              ),
+            );
+          },
+        );
 
         return Table(
           border: TableBorder.all(

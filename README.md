@@ -18,14 +18,14 @@ Supported widgets:
 - [x] checkbox
 - [x] ranking
 - [x] radiogroup
-- [ ] imagepicker
+- [x] imagepicker
 - [x] dropdown
 - [x] text
 - [x] multipletext
 - [x] html
 - [x] image
 - [x] comment
-- [ ] file
+- [x] file
 - [x] rating
 - [x] boolean
 - [x] signaturepad

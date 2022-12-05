@@ -1,6 +1,8 @@
 import 'package:flutter_survey_js/model/survey.dart' as s;
 import 'package:flutter_survey_js/ui/elements/survey_element_factory.dart';
+import 'package:reactive_file_picker/reactive_file_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_image_picker/image_file.dart';
 
 import 'validators.dart';
 
@@ -36,17 +38,46 @@ extension ElementExtension on s.ElementBase {
       if (this is s.MatrixDynamic) {
         return fb.array((this as s.MatrixDynamic).defaultValue ?? []);
       }
+      if (this is s.ImagePicker) {
+        return fb.control(ImageFile());
+      }
+      if (this is s.File) {
+        return fb.control(MultiFile<Never>());
+      }
       if (this is s.Matrix) {
         final m = this as s.Matrix;
-        return fb.group(Map.fromEntries((m.rows ?? []).map((e) =>
-            MapEntry(e.value.toString(), FormControl<dynamic>(value: null)))));
+        return fb.group(
+          Map.fromEntries(
+            (m.rows ?? []).map(
+              (e) => MapEntry(
+                e.value.toString(),
+                FormControl<dynamic>(value: null),
+              ),
+            ),
+          ),
+        );
       }
       if (this is s.MatrixDropdown) {
         final m = this as s.MatrixDropdown;
-        return fb.group(Map.fromEntries((m.rows ?? []).map((e) => MapEntry(
-            e.value.toString(),
-            fb.group(Map.fromEntries((m.columns ?? []).map((e) =>
-                MapEntry(e.name!, FormControl<dynamic>(value: null)))))))));
+        return fb.group(
+          Map.fromEntries(
+            (m.rows ?? []).map(
+              (e) => MapEntry(
+                e.value.toString(),
+                fb.group(
+                  Map.fromEntries(
+                    (m.columns ?? []).map(
+                      (e) => MapEntry(
+                        e.name!,
+                        FormControl<dynamic>(value: null),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
       }
       final validators = <ValidatorFunction>[];
       if (this is s.Question) {
